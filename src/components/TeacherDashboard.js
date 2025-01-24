@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "../services/api";
+import api from "../services/api"; // Import the api instance
 import styled from "styled-components";
 
 const DashboardContainer = styled.div`
@@ -78,7 +78,7 @@ const TeacherDashboard = () => {
       formData.append('file', resourceFile);
       formData.append('name', resourceName);
   
-      const response = await axios.post('http://localhost:5001/api/teacher/upload', formData, {
+      const response = await api.post('/api/teacher/upload', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -94,8 +94,7 @@ const TeacherDashboard = () => {
       alert('Failed to upload resource.');
     }
   };
-  
-  
+
   const handleScheduleClass = (e) => {
     e.preventDefault();
   
@@ -108,7 +107,7 @@ const TeacherDashboard = () => {
     console.log("Scheduling class with data:", classData);
     console.log("Using token:", token); // Log the token
   
-    axios
+    api
       .post("/api/teacher/schedules", classData, {
         headers: {
           Authorization: `Bearer ${token}`,
