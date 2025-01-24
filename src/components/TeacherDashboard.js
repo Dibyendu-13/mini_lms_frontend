@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import api from "../services/api"; // Import the api instance
+import api from "../services/api";
 import styled from "styled-components";
+import { toast } from "react-toastify"; // Import toast
 
 const DashboardContainer = styled.div`
   padding: 20px;
@@ -66,47 +67,43 @@ const TeacherDashboard = () => {
   const [classTime, setClassTime] = useState("");
 
   const handleResourceUpload = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     if (!resourceFile || !resourceName) {
-      alert('Please provide both resource name and file.');
+      toast.error("Please prxovide both resource name and file.");
       return;
     }
-  
+
     try {
       const token = localStorage.getItem('token');
       const formData = new FormData();
       formData.append('file', resourceFile);
       formData.append('name', resourceName);
-  
-      const response = await api.post('/api/teacher/upload', formData, {
+
+       await api.post('/api/teacher/upload', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
-  
-      console.log('Resource uploaded successfully:', response.data);
-      alert('Resource uploaded successfully');
+
+      toast.success('Resource uploaded successfully');
       setResourceName('');
       setResourceFile(null);
     } catch (error) {
-      console.error('Error uploading resource:', error);
-      alert('Failed to upload resource.');
+      toast.error('Failed to upload resource.');
     }
   };
 
   const handleScheduleClass = (e) => {
     e.preventDefault();
-  
+
     const classData = {
       title: classTitle,
       time: classTime,
     };
-  
-    const token = localStorage.getItem('token'); // Get the token from localStorage
-    console.log("Scheduling class with data:", classData);
-    console.log("Using token:", token); // Log the token
-  
+
+    const token = localStorage.getItem('token');
+    
     api
       .post("/api/teacher/schedules", classData, {
         headers: {
@@ -114,17 +111,14 @@ const TeacherDashboard = () => {
         },
       })
       .then((response) => {
-        console.log("Class scheduled successfully:", response.data);
-        alert("Class scheduled successfully!");
+        toast.success("Class scheduled successfully!");
         setClassTitle("");
         setClassTime("");
       })
       .catch((error) => {
-        console.error("Error scheduling class:", error);
-        alert("Failed to schedule class.");
+        toast.error("Failed to schedule class.");
       });
   };
-  
 
   return (
     <DashboardContainer>

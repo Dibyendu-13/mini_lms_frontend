@@ -1,51 +1,52 @@
 import React, { useState, useEffect } from "react";
 import axios from "../services/api";
 import styled from "styled-components";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DashboardContainer = styled.div`
-  padding: 20px;
-  max-width: 900px;
+  padding: 40px;
+  max-width: 1100px;
   margin: 0 auto;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
 `;
 
 const Title = styled.h1`
   text-align: center;
   color: #333;
-  margin-bottom: 20px;
+  font-size: 36px;
+  margin-bottom: 40px;
 `;
 
 const Section = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 20px;
+  font-size: 28px;
   color: #2575fc;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 `;
 
-const ScheduleList = styled.ul`
-  list-style: none;
-  padding: 0;
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 `;
 
-const ScheduleItem = styled.li`
-  background: #f9f9f9;
+const TableHeader = styled.th`
+  background-color: #2575fc;
+  color: white;
+  padding: 12px 18px;
+  text-align: left;
+`;
+
+const TableData = styled.td`
+  padding: 12px 18px;
   border: 1px solid #ddd;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  span {
-    font-weight: bold;
-    color: #333;
-  }
+  text-align: left;
 `;
 
 const ResourceList = styled.ul`
@@ -56,9 +57,9 @@ const ResourceList = styled.ul`
 const ResourceItem = styled.li`
   background: #f9f9f9;
   border: 1px solid #ddd;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,9 +68,26 @@ const ResourceItem = styled.li`
     color: #2575fc;
     text-decoration: none;
     font-weight: bold;
+    font-size: 18px;
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  button {
+    padding: 12px 20px;
+    border: none;
+    background-color: #2575fc;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #1d61c5;
     }
   }
 `;
@@ -93,9 +111,11 @@ const StudentDashboard = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSchedules(response.data.schedules);
+        toast.success("Schedules loaded successfully!");
       } catch (err) {
         console.error("Error fetching schedules:", err);
         setError("Failed to fetch schedules.");
+        toast.error("Failed to fetch schedules.");
       }
     };
 
@@ -105,9 +125,11 @@ const StudentDashboard = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setResources(response.data.resources);
+        toast.success("Resources loaded successfully!");
       } catch (err) {
         console.error("Error fetching resources:", err);
         setError("Failed to fetch resources.");
+        toast.error("Failed to fetch resources.");
       }
     };
 
@@ -118,11 +140,14 @@ const StudentDashboard = () => {
   const formatTime = (timeString) => {
     const date = new Date(timeString);
     const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     };
-    return date.toLocaleTimeString([], options);
+    return date.toLocaleString([], options);
   };
 
   const handleDownload = (filePath) => {
@@ -138,6 +163,8 @@ const StudentDashboard = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    toast.success(`Downloading ${fileName}...`);
   };
 
   return (
@@ -148,18 +175,28 @@ const StudentDashboard = () => {
 
       <Section>
         <SectionTitle>Class Schedules</SectionTitle>
-        <ScheduleList>
-          {schedules.length > 0 ? (
-            schedules.map((schedule) => (
-              <ScheduleItem key={schedule._id}>
-                <span>{schedule.title}</span>
-                <span>{formatTime(schedule.time)}</span>
-              </ScheduleItem>
-            ))
-          ) : (
-            <p>No schedules available.</p>
-          )}
-        </ScheduleList>
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>Title</TableHeader>
+              <TableHeader>Time</TableHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {schedules.length > 0 ? (
+              schedules.map((schedule) => (
+                <tr key={schedule._id}>
+                  <TableData>{schedule.title}</TableData>
+                  <TableData>{formatTime(schedule.time)}</TableData>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <TableData colSpan="2">No schedules available.</TableData>
+              </tr>
+            )}
+          </tbody>
+        </Table>
       </Section>
 
       <Section>
@@ -179,6 +216,8 @@ const StudentDashboard = () => {
           )}
         </ResourceList>
       </Section>
+
+      <ToastContainer />
     </DashboardContainer>
   );
 };
