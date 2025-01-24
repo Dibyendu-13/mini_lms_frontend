@@ -5,12 +5,20 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DashboardContainer = styled.div`
-  padding: 40px;
+  padding: 20px;
   max-width: 1100px;
   margin: 0 auto;
   background: white;
   border-radius: 10px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -18,22 +26,58 @@ const Title = styled.h1`
   color: #333;
   font-size: 36px;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
 `;
 
 const Section = styled.div`
   margin-bottom: 50px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const SectionTitle = styled.h2`
   font-size: 28px;
   color: #2575fc;
   margin-bottom: 25px;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -41,12 +85,28 @@ const TableHeader = styled.th`
   color: white;
   padding: 12px 18px;
   text-align: left;
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 10px;
+  }
 `;
 
 const TableData = styled.td`
   padding: 12px 18px;
   border: 1px solid #ddd;
   text-align: left;
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 10px;
+  }
 `;
 
 const ResourceList = styled.ul`
@@ -61,8 +121,17 @@ const ResourceItem = styled.li`
   margin-bottom: 20px;
   border-radius: 8px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    padding: 15px 25px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 20px;
+  }
 
   a {
     color: #2575fc;
@@ -81,13 +150,23 @@ const ResourceItem = styled.li`
     background-color: #2575fc;
     color: white;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease;
 
     &:hover {
       background-color: #1d61c5;
+    }
+
+    @media (max-width: 768px) {
+      padding: 10px 15px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      padding: 8px 12px;
+      font-size: 12px;
     }
   }
 `;
@@ -168,7 +247,8 @@ const StudentDashboard = () => {
   };
 
   return (
-    <DashboardContainer>
+    <div style={{margin: "100px"}}>
+<DashboardContainer>
       <Title>Student Dashboard</Title>
 
       {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
@@ -216,8 +296,9 @@ const StudentDashboard = () => {
           )}
         </ResourceList>
       </Section>
-
     </DashboardContainer>
+    </div>
+    
   );
 };
 

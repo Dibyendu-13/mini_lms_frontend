@@ -113,5 +113,5 @@ src/
 Set up the following environment variables in a `.env` file at the root of the project:
 
 ```env
-REACT_APP_API_BASE_URL=http://localhost:5000 # Replace with your API URL
+REACT_APP_API_BASE_URL=http://localhost:5001 # Replace with your API URL
 ```

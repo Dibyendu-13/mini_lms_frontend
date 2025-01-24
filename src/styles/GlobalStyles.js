@@ -28,4 +28,14 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0 auto;
     padding: 20px;
   }
+
+  @media (max-width: 768px) {
+    body {
+      padding: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
 `;
