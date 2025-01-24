@@ -1,70 +1,117 @@
-# Getting Started with Create React App
+# React Dashboard Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React-based web application providing distinct dashboards for teachers and students. The application includes user authentication, class schedules, and resource management functionalities.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **User Authentication**: Register and log in securely.
+- **Student Dashboard**: View class schedules and download resources.
+- **Teacher Dashboard**: Upload resources and schedule classes.
+- **Notifications**: Feedback and error messages using `react-toastify`.
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- React Router
+- Styled Components
+- Axios
+- React Toastify
+- Node.js (for API backend)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Installation and Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+Ensure the following are installed:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [Node.js](https://nodejs.org/) (v14 or above)
+- npm or yarn
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Steps
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
 
-### `npm run eject`
+   ```bash
+   git clone https://github.com/your-repo/react-dashboard-app.git
+   cd react-dashboard-app
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Install dependencies:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   npm install
+   # Or if you use yarn
+   yarn install
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Start the development server:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   npm start
+   # Or
+   yarn start
+   ```
 
-## Learn More
+4. Open your browser and visit:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```
+   http://localhost:3000
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## API Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This project requires a backend server. Follow the steps below to set it up:
 
-### Analyzing the Bundle Size
+1. Install and configure your API server (Node.js/Express).
+2. Ensure the following API endpoints are implemented:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   - **POST** `/api/student/schedules`: Fetch student schedules.
+   - **POST** `/api/student/resources`: Fetch downloadable resources.
+   - **POST** `/api/teacher/upload`: Upload resources.
+   - **POST** `/api/teacher/schedule`: Schedule a class.
 
-### Making a Progressive Web App
+3. Update the API base URL in `services/api.js` to point to your backend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   ```javascript
+   import axios from "axios";
 
-### Advanced Configuration
+   const instance = axios.create({
+     baseURL: "http://your-backend-server.com", // Update with your API URL
+   });
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   export default instance;
+   ```
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Project Structure
 
-### `npm run build` fails to minify
+```plaintext
+src/
+├── components/
+│   ├── TeacherDashboard.js
+│   ├── StudentDashboard.js
+├── pages/
+│   ├── Register.js
+│   ├── Login.js
+├── services/
+│   └── api.js
+├── styles/
+│   └── GlobalStyles.js
+├── App.js
+└── index.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Environment Variables
+
+Set up the following environment variables in a `.env` file at the root of the project:
+
+```env
+REACT_APP_API_BASE_URL=http://localhost:5000 # Replace with your API URL
+```
