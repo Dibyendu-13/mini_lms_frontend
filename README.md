@@ -113,5 +113,5 @@ src/
 Set up the following environment variables in a `.env` file at the root of the project:
 
 ```env
-REACT_APP_API_BASE_URL=http://localhost:5001 # Replace with your API URL
+REACT_APP_API_BASE_URL=https://83e7-2402-e280-3d9b-1f3-1007-f151-1b93-e67e.ngrok-free.app # Replace with your API URL
 ```

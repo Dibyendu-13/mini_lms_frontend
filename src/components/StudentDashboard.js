@@ -2,23 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "../services/api";
 import styled from "styled-components";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const DashboardContainer = styled.div`
-  padding: 20px;
+  padding: 40px;
   max-width: 1100px;
   margin: 0 auto;
   background: white;
   border-radius: 10px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
-
-  @media (max-width: 768px) {
-    padding: 15px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 10px;
-  }
 `;
 
 const Title = styled.h1`
@@ -26,58 +17,22 @@ const Title = styled.h1`
   color: #333;
   font-size: 36px;
   margin-bottom: 40px;
-
-  @media (max-width: 768px) {
-    font-size: 28px;
-    margin-bottom: 30px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
 `;
 
 const Section = styled.div`
   margin-bottom: 50px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 30px;
-  }
-
-  @media (max-width: 480px) {
-    margin-bottom: 20px;
-  }
 `;
 
 const SectionTitle = styled.h2`
   font-size: 28px;
   color: #2575fc;
   margin-bottom: 25px;
-
-  @media (max-width: 768px) {
-    font-size: 22px;
-    margin-bottom: 15px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 12px;
-  }
 `;
 
 const TableHeader = styled.th`
@@ -85,28 +40,12 @@ const TableHeader = styled.th`
   color: white;
   padding: 12px 18px;
   text-align: left;
-
-  @media (max-width: 768px) {
-    padding: 10px 12px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 8px 10px;
-  }
 `;
 
 const TableData = styled.td`
   padding: 12px 18px;
   border: 1px solid #ddd;
   text-align: left;
-
-  @media (max-width: 768px) {
-    padding: 10px 12px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 8px 10px;
-  }
 `;
 
 const ResourceList = styled.ul`
@@ -121,17 +60,8 @@ const ResourceItem = styled.li`
   margin-bottom: 20px;
   border-radius: 8px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-
-  @media (max-width: 768px) {
-    padding: 15px 25px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 12px 20px;
-  }
 
   a {
     color: #2575fc;
@@ -150,23 +80,13 @@ const ResourceItem = styled.li`
     background-color: #2575fc;
     color: white;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease;
 
     &:hover {
       background-color: #1d61c5;
-    }
-
-    @media (max-width: 768px) {
-      padding: 10px 15px;
-      font-size: 14px;
-    }
-
-    @media (max-width: 480px) {
-      padding: 8px 12px;
-      font-size: 12px;
     }
   }
 `;
@@ -189,7 +109,7 @@ const StudentDashboard = () => {
         const response = await axios.get("/api/student/schedules", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setSchedules(response.data.schedules);
+        setSchedules(response.data.schedules || []);
         toast.success("Schedules loaded successfully!");
       } catch (err) {
         console.error("Error fetching schedules:", err);
@@ -203,7 +123,7 @@ const StudentDashboard = () => {
         const response = await axios.get("/api/student/resources", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setResources(response.data.resources);
+        setResources(response.data.resources || []);
         toast.success("Resources loaded successfully!");
       } catch (err) {
         console.error("Error fetching resources:", err);
@@ -230,7 +150,7 @@ const StudentDashboard = () => {
   };
 
   const handleDownload = (filePath) => {
-    const baseUrl = "http://localhost:5001"; // Update this if necessary
+    const baseUrl = "https://83e7-2402-e280-3d9b-1f3-1007-f151-1b93-e67e.ngrok-free.app"; // Update this if necessary
     const fullUrl = `${baseUrl}${filePath}`;
 
     const link = document.createElement("a");
@@ -247,8 +167,7 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div style={{margin: "100px"}}>
-<DashboardContainer>
+    <DashboardContainer>
       <Title>Student Dashboard</Title>
 
       {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
@@ -263,7 +182,7 @@ const StudentDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {schedules.length > 0 ? (
+            {schedules && schedules.length > 0 ? (
               schedules.map((schedule) => (
                 <tr key={schedule._id}>
                   <TableData>{schedule.title}</TableData>
@@ -282,7 +201,7 @@ const StudentDashboard = () => {
       <Section>
         <SectionTitle>Resources</SectionTitle>
         <ResourceList>
-          {resources.length > 0 ? (
+          {resources && resources.length > 0 ? (
             resources.map((resource) => (
               <ResourceItem key={resource._id}>
                 <span>{resource.name}</span>
@@ -296,9 +215,8 @@ const StudentDashboard = () => {
           )}
         </ResourceList>
       </Section>
+
     </DashboardContainer>
-    </div>
-    
   );
 };
 
