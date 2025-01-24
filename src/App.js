@@ -19,7 +19,16 @@ const App = () => {
           <Route path="/student-dashboard" element={<StudentDashboard />} />
         </Routes>
       </Router>
-      <ToastContainer />
+      {/* ToastContainer with autoClose set to 3000ms (3 seconds) */}
+      <ToastContainer 
+  autoClose={3000} 
+  closeButton 
+  hideProgressBar={false} 
+  newestOnTop 
+  pauseOnFocusLoss 
+  draggable 
+/>
+
     </>
   );
 };
